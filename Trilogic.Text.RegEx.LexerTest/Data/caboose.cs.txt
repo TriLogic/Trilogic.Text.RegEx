@@ -1,0 +1,321 @@
+#
+# ScanGen Scanner Specification:
+# The Caboose Programming Language
+#
+# Currently, this scanner definition recognizes C/C++ Style comments
+# including embedded multiline comments.
+#
+#
+.scanner CabooseScanner
+
+.macro PUSH
+	mLex.PushState("{0}");
+.
+.macro POP
+	mLex.PopState();
+.
+.macro MATCH_LENGTH
+	mMatchLength
+.
+.macro MATCH_VALUE
+	mMatchValue
+.
+
+#
+# User Definitions
+#
+.declare
+Dim m_LINE_NO as Integer
+Dim mCC_DEPTH as Integer
+Dim mCC_LINE_START as Integer
+Dim mCC_LINE_END as Integer
+Dim sBuild as String
+Dim sDebugInfo as String
+.
+
+#
+# User Initialization Code
+#
+.initialize
+	m_LINE_NO = 1
+	mCC_LINE_START = 0
+	mCC_LINE_END = 0
+.
+
+#
+# User Finalization Code
+#
+.finalize
+	'empty
+.
+
+#
+# Define Regular Expression Constants
+# format: regex_name regex_value [comment]
+#
+.pattern
+
+	#
+	#
+	#
+	white				/[ \t]+/
+	#space				/[ \t]*/
+	comment				/\//\//.*/
+	eol					/((\r\n)|\r|\n)/
+
+	#
+	# C/C++ Style Comments
+	#
+	cc_slash_slash		/\//\///
+	cc_slash_star		/\//\*/
+	cc_star_slash		/\*\///
+	cc_ignore			/[^\r\n//*]+/
+	cc_slash_or_star	/[//*]/
+	cc_not_eol			/[^\r\n]*/
+
+	ident_path			/[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z])*(\.[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z])*)*/
+	ident				/[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z])*/
+
+	colon				/:/
+	semicolon			/;/
+
+	tc_operator			/(<<=)|(>>=)|(&&=)|(\|\|=)/
+	dc_operator			/(\+\+)|(--)|(<<)|(>>)|(<=)|(>=)|(==)|(!=)|(&&)|(\|\|)|(\*=)|(\+=)|(-=)|(\//=)|(\^=)/
+	sc_operator			/[-+*//=<>^!%|&.]/
+	operator			/{tc_operator}|{dc_operator}|{sc_operator}/
+
+	#
+	# Reservd Keywords
+	#
+	rw_package			/package/
+	rw_import			/import/
+	rw_class			/class/
+
+	rw_begin		/begin/
+	rw_end			/end/
+	rw_public		/public/
+	rw_private		/private/
+	rw_friend		/friend/
+	rw_static		/static/
+	rw_interface	/interface/
+	rw_extends		/extends/
+	rw_implements	/implements/
+	rw_me			/me/
+	rw_sub			/sub/
+	rw_true			/true/
+	rw_new			/new/
+	rw_false		/false/
+	rw_null			/null/
+	rw_nothing		/nothing/
+	rw_for			/for/
+	rw_while		/while/
+	rw_dim			/dim/
+	rw_as			/as/
+	rw_string		/string/
+	rw_object		/object/
+	rw_int			/int/
+	rw_long			/long/
+	rw_single		/single/
+	rw_double		/double/
+	rw_byte			/byte/
+	rw_return		/return/
+	rw_break		/break/
+	rw_continue		/continue/
+	rw_try			/try/
+	rw_catch		/catch/
+	rw_finally		/finally/
+	rw_throw		/throw/
+	rw_to			/to/
+	rw_step			/step/
+	rw_next			/next/
+	rw_select		/select/
+	rw_case			/case/
+	rw_if			/if/
+	rw_then			/then/
+	rw_elseif		/elseif/
+	rw_else			/else/
+	rw_native		/native/
+	rw_declare		/declare/
+
+	lparen			/\(/
+	rparen			/\)/
+	lbracket		/\[/
+	rbracket		/\]/
+	lcurly			/\{/
+	rcurly			/\}/
+	comma			/,/
+
+	dqstring      /\"([^\r\n"\\]+|(\\[rnlt"\\]))*\"/
+	sqstring      /'([^\r\n'\\]+|(\\[rnlt'\\]))*'/
+	ctrl_char     /\\[^\r\l\t]/
+.
+
+#
+# Define all possible tokens for the scanner.
+# format: token_name [ regex | {regex_name} ]* [comment]
+#
+.token
+
+	white				# whitespace
+	eol					# end of line
+
+	cc_slash_slash		# C++ single line initial
+	cc_slash_star		# C++ multiline initial
+	cc_not_eol			# anything that is not the end of line character
+	cc_star_slash		# C++ multiline comment terminal
+	cc_slash_or_star	# a slash or a star character
+	cc_ignore			# comment ignore token
+
+	stmt_package
+	stmt_import
+
+	rw_package
+	rw_import
+	rw_class
+
+	ident_path
+	ident
+
+	colon
+	semicolon
+.
+
+#
+# Assign Tokens to States in the Scanner
+# format: [<state_name>=default] token_name [token_value=token_id] [comment]
+#
+.state
+
+	# tokens in the default state
+	white								ignore
+	eol
+
+	# parse a package definition
+	rw_package
+	rw_class
+	rw_import
+
+	<expect_ident_path>white			ignore
+	<expect_ident_path>ident_path
+
+	<expect_semicolon>white				ignore
+	<expect_semicolon>semicolon
+
+	# for starting comments
+	cc_slash_slash
+	cc_slash_star
+
+	# single line comments
+	<sl_comment>cc_not_eol
+
+	# multi line comments
+	<ml_comment>cc_star_slash
+	<ml_comment>cc_slash_star
+	<ml_comment>cc_ignore				ignore
+	<ml_comment>cc_slash_or_star		ignore
+	<ml_comment>eol
+
+.
+
+#------------------------------------------------------------
+# Begin - State/Token Handler Code
+#------------------------------------------------------------
+.<>eol
+	'DInfo m_LINE_NO, m_LINE_NO, "<newline>"
+	IncrLine
+.
+.<>white
+.
+
+.<>rw_package
+	@PUSH(expect_ident_path)
+.
+.<>rw_import
+	@PUSH(expect_ident_path)
+.
+
+.<expect_ident_path>ident_path
+	@POP
+	@PUSH(expect_semicolon)
+.
+
+.<expect_semicolon>semicolon
+	@POP
+.
+
+.<>cc_slash_slash
+	mCC_LINE_START = m_LINE_NO
+	mCC_LINE_END    = m_LINE_NO
+	@PUSH(sl_comment)
+	@IGNORE
+.
+
+.<>cc_slash_star
+	mCC_DEPTH = mCC_DEPTH + 1
+	If mCC_DEPTH = 1 Then
+		mCC_LINE_START = m_LINE_NO
+		mCC_LINE_END    = m_LINE_NO
+	End If
+	@PUSH(ml_comment)
+.
+
+
+.<sl_comment>cc_not_eol
+	DInfo m_LINE_NO, m_LINE_NO, "single line comment"
+	@POP
+	@IGNORE
+.
+
+.<ml_comment>eol
+	IncrLine
+	@IGNORE
+.
+.<ml_comment>cc_slash_star
+	mCC_DEPTH = mCC_DEPTH + 1
+	@PUSH(ml_comment)
+	@IGNORE
+.
+.<ml_comment>cc_star_slash
+	mCC_DEPTH = mCC_DEPTH - 1
+	If mCC_DEPTH = 0 Then
+		DInfo mCC_LINE_START, m_LINE_NO, "multi line comment"
+	End If
+	@POP
+	@IGNORE
+.
+
+
+#------------------------------------------------------------
+# User Support Code
+#------------------------------------------------------------
+.code
+
+Public Property Get StartLine() as Long
+	StartLine = mCC_LINE_START
+End Property
+
+Public Property Get CurrLine() as LOng
+	CurrLine = m_LINE_NO
+End Property
+
+Public Property Get EndLine() as Long
+	EndLIne = mCC_LINE_END
+End Property
+
+Sub IncrLine()
+	m_LINE_NO = m_LINE_NO + 1
+End Sub
+
+Sub DInfo(LS as Integer, LE as Integer, Msg)
+	sDebugInfo = FmtLine(LS) & "-" & FmtLine(LE) & ":" & Msg
+End Sub
+
+Function FmtLine(V as Integer) as String
+	FmtLine = Right("00000" & Cstr(V),5)
+End Function
+.
+
+.
+#
+# end scanner
+#

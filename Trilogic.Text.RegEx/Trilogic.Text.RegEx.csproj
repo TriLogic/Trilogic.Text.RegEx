@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.30319</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3BC60C2D-FA62-40C0-A331-8056F74E4EE1}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon />
+    <AssemblyKeyContainerName />
+    <AssemblyName>Trilogic.Text.Regex</AssemblyName>
+    <AssemblyOriginatorKeyFile />
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Trilogic.Text.RegEx</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject />
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>0.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile />
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile />
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn />
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile />
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile />
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn />
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxAtom.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxAnchorB.cs" />
+    <Compile Include="RxAnchorH.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxAnchorT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxAnchorW.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxOpAND.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxAtomBREF.cs" />
+    <Compile Include="RxCharABS.cs" />
+    <Compile Include="RxCharANY.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxAtomCapture.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxCharC.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxCharClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxCharCTL.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxCharDIGIT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxCharICASE.cs" />
+    <Compile Include="RxCharUPR.cs" />
+    <Compile Include="RxAtomGroup.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxOpIIF.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxOpOPTION.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxOpOR.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxOpPLUS.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxCharPUN.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxAtomN2M.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxOpSTR.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxCharWHT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxCharWRD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxAtomSTR.cs" />
+    <Compile Include="RxAtomSTRI.cs" />
+    <Compile Include="RxBitset.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxCharLWR.cs" />
+    <Compile Include="RxCharSource.cs" />
+    <Compile Include="RxCompiler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxAtomTree.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxFrame.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxLexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxLexerGen.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxLexerMacros.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxLexerState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxMatch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxAtomParent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxMatcher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxBuilderStream.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxSubMatch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RxAtomZMA.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent />
+    <PostBuildEvent />
+  </PropertyGroup>
+</Project>
